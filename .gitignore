@@ -1,0 +1,15 @@
+
+
+
+# Language specific 
+
+## Python
+
+__pycache__
+
+
+
+# Hide secrets 😈
+
+.secrets.txt
+input*.txt
