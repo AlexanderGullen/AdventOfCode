@@ -26,9 +26,6 @@ def validate_update(rules,update):
                     return False
     return True
 
-
-
-
 def part1(rules,updates):
     rules_dict = {}
     for rule in rules:
@@ -37,17 +34,40 @@ def part1(rules,updates):
         else:
             rules_dict[rule[0]].append(rule[1])
 
-    print(f'rules: {rules_dict}')
-
     total = 0
     
     for update in updates:
         if validate_update(rules_dict,update): 
             total += update[len(update) // 2]
-        print(f'update: {update} valid: {validate_update(rules_dict,update)}')
 
     return total
 
+def middle_value_of_incorrect(rules,update):
+    for i in range(len(update)):
+        if update[i] in rules:
+            for k in range(0,i):
+                if update[k] in rules[update[i]]:
+                    temp = update[i]
+                    update[i] = update[k]
+                    update[k] = temp
+    
+    return update[len(update) // 2]
+
+def part2(rules,updates):
+    rules_dict = {}
+    for rule in rules:
+        if rule[0] not in rules_dict:
+            rules_dict[rule[0]] = [rule[1]]
+        else:
+            rules_dict[rule[0]].append(rule[1])
+
+    total = 0
+    
+    for update in updates:
+        if not validate_update(rules_dict,update): 
+            total += middle_value_of_incorrect(rules_dict,update)
+
+    return total
 
 
 if __name__ == '__main__':
@@ -59,7 +79,6 @@ if __name__ == '__main__':
     input_string = input_file.read()
     input_file.close()
 
-    print(input_file) 
     print(f'test input: {test_input}')
 
     print(f'formated input: {format(test_input)}')
@@ -68,6 +87,12 @@ if __name__ == '__main__':
 
     print(f'part1 test: {part1(test_rules,test_updates)}')
 
-    rules, update = format(input_string)
+    rules, updates = format(input_string)
 
-    print(f'part1 solution: {part1(rules,update)}')
+    print(f'part1 solution: {part1(rules,updates)}')
+
+    print(f'part2 test: {part2(test_rules,test_updates)}')
+
+    print(f'part2 solution: {part2(rules,updates)}')
+
+
